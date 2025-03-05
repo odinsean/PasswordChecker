@@ -10,6 +10,7 @@ const uppercaseCheck = document.getElementById('uppercase-check');
 const lowercaseCheck = document.getElementById('lowercase-check');
 const numberCheck = document.getElementById('number-check');
 const specialCheck = document.getElementById('special-check');
+const asteriskCheck = document.getElementById('asterisk-check');
 const suggestionsBox = document.getElementById('suggestions');
 
 // Toggle password visibility
@@ -35,6 +36,7 @@ function evaluatePassword() {
   const hasLowercase = /[a-z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
   const hasSpecial = /[^A-Za-z0-9]/.test(password);
+  const hasAsterisk = password.includes('*');
   
   // Update requirement checks
   lengthCheck.textContent = hasLength ? '✅' : '❌';
@@ -42,6 +44,7 @@ function evaluatePassword() {
   lowercaseCheck.textContent = hasLowercase ? '✅' : '❌';
   numberCheck.textContent = hasNumber ? '✅' : '❌';
   specialCheck.textContent = hasSpecial ? '✅' : '❌';
+  asteriskCheck.textContent = hasAsterisk ? '✅' : '❌';
   
   // Calculate strength score (0-100)
   let score = 0;
@@ -56,6 +59,7 @@ function evaluatePassword() {
   if (hasLowercase) score += 15;
   if (hasNumber) score += 15;
   if (hasSpecial) score += 25;
+  if (hasAsterisk) score += 10;
   
   // Calculate strength category and update UI
   updateStrengthUI(score);
@@ -120,6 +124,9 @@ function generateSuggestions(password, hasLength, hasUppercase, hasLowercase, ha
   
   if (!hasSpecial) {
     suggestions.push('Add special characters (e.g., !@#$%^&*).');
+  }
+  if (!hasAsterisk) {
+    suggestions.push('Include an asterisk (*) in your password.');
   }
   
   // Check for common patterns
